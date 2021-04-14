@@ -1,0 +1,51 @@
+# Default values for es-cluster.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+certManager:
+  clusterIssuerName: selfsigned-issuer
+  clusterIssuerNamespace: cert-manager
+
+elasticCA:
+  certificateName: elastic-ca
+  certificateSecret: elastic-ca-certificate
+  certificateCommonName: "Elastic Certificate CA"
+  issuerName: elastic-ca-issuer
+  
+elasticTransportCertificate:
+  name: elastic-transport
+  secret: elastic-transport-certificate
+
+elasticService:
+  transport:
+    name: "es-transport"
+    port: 9300
+  http:
+    name: "es-public"
+    port: 9200
+
+statefulSetName: "es-node"
+replicaCount: 3
+
+certificatesVolumeName: elastic-transport-certificate
+certificatesVolumeMount: /usr/share/elasticsearch/config/certs
+dataVolumeName: data
+dataVolumeSize: "1Gi"
+
+image:
+  repository: docker.elastic.co/elasticsearch/elasticsearch
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+env:
+  javaOpts: "-Xms512m -Xmx512m"
+
+elastitClusterName: es-k8s-cluster
+
+xpack:
+  securityEnabled: true
+  transportSSLEnabled: true
+  transportSSLMode: certificate
+  monitoringCollectionEnabled: true
