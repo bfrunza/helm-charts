@@ -25,11 +25,25 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
+{{- define "kibanaLabels" -}}
+helm.sh/chart: {{ include "es-cluster.chart" . }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{ include "kibanaSelectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+{{- end }}
+
+{{- define "kibanaSelectorLabels" -}}
+app: {{ .Values.kibana.appLabel }}
+instance: {{ .Release.Name }}
+{{- end }}
+
 {{/*
 Selector labels
 */}}
 {{- define "es-cluster.selectorLabels" -}}
-app: {{ .Values.statefulSetName }}
+app: {{ .Values.elastic.statefulSetName }}
 instance: {{ .Release.Name }}
 {{- end }}
 
@@ -38,9 +52,9 @@ Create master node list
 */}}
 
 {{- define "masterNodes" -}}
-{{- $prefix := .statefulSetName }}
+{{- $prefix := .elastic.statefulSetName }}
 {{- $list := dict "servers" (list) -}}
-{{- range int .replicaCount | until -}}
+{{- range int .elastic.replicaCount | until -}}
 {{- $noop := printf "%s-%d" $prefix . | append $list.servers | set $list "servers" -}}
 {{- end -}}
 {{- join "," $list.servers -}}
@@ -48,11 +62,11 @@ Create master node list
 
 
 {{- define "nodesFQDN" -}}
-{{- $prefix := .Values.statefulSetName }}
+{{- $prefix := .Values.elastic.statefulSetName }}
 {{- $baseDomain := .Release.Namespace }}
-{{- $service := .Values.elasticService.transport.name }}
+{{- $service := .Values.elastic.service.transport.name }}
 {{- $list := dict "servers" (list) -}}
-{{- range int .Values.replicaCount | until -}}
+{{- range int .Values.elastic.replicaCount | until -}}
 {{- $noop := printf "%s-%d.%s.%s.svc.cluster.local" $prefix . $service $baseDomain | append $list.servers | set $list "servers" -}}
 {{- end -}}
 {{- join "," $list.servers -}}

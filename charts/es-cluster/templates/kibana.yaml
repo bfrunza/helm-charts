@@ -1,0 +1,49 @@
+{{- if .Values.kibana.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.kibana.deploymentName }}
+  labels:
+    {{- include "kibanaLabels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "kibanaSelectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "kibanaSelectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: kibana
+          image: {{ .Values.kibana.image }}:{{ .Chart.AppVersion }}
+          ports:
+          - name: http
+            containerPort: 5601
+          livenessProbe:
+            httpGet:
+              path: /status
+              port: 5601
+            initialDelaySeconds: 50
+            periodSeconds: 5
+          env:
+          - name: ELASTICSEARCH_HOSTS
+            value: http://{{ .Values.elastic.service.http.name }}:{{ .Values.elastic.service.http.port }}
+          - name: SERVER_BASEPATH
+            value: /{{ .Values.ingress.kibanaPath }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.kibana.serviceName }}
+  labels:
+    {{- include "kibanaLabels" . | nindent 4 }}
+spec:
+  ports:
+  - name: http
+    port: {{ .Values.kibana.servicePort }}
+    targetPort: http
+  selector:
+    {{- include "kibanaSelectorLabels" . | nindent 4 }}
+{{- end }}

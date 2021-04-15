@@ -2,50 +2,105 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# -- Override the name of the chart in labels
 nameOverride: ""
-fullnameOverride: ""
+
 certManager:
+  # -- Selfsigned certificate ClusterIssuer Name
   clusterIssuerName: selfsigned-issuer
+  # -- Namespace for selfsigned certificate ClusterIssuer
   clusterIssuerNamespace: cert-manager
 
 elasticCA:
+  # -- Resource name for internal CA signing certificate
   certificateName: elastic-ca
+  # -- Secret name to store the internal CA signing certificate
   certificateSecret: elastic-ca-certificate
-  certificateCommonName: "Elastic Certificate CA"
+  # -- CA Common Name
+  certificateCommonName: "Internal Certificate CA"
+  # -- Certificate issuer name
   issuerName: elastic-ca-issuer
-  
-elasticTransportCertificate:
-  name: elastic-transport
-  secret: elastic-transport-certificate
 
-elasticService:
-  transport:
-    name: "es-transport"
-    port: 9300
-  http:
-    name: "es-public"
-    port: 9200
+elastic:
+  # -- Elastisearch cluster name. This is Elastic specific, not Kubernetes resource
+  clusterName: es-k8s-cluster
+  # -- Elasticsearch cluster StetefulSet name. This will be used as base for node names
+  statefulSetName: "es-node"
+  # -- Number of Elastic nodes to be deployed
+  replicaCount: 3
+  # -- Image repository
+  image: docker.elastic.co/elasticsearch/elasticsearch
+  # -- If enabled, will not allow two pods to run on the same node
+  usetAntiAffinity: true
+  transportCertificate:
+    # -- Transport certificate object name
+    name: elastic-transport
+    # -- Secret name to store transport certificate
+    secret: elastic-transport-certificate
+  service:
+    transport:
+      # -- Transport service name
+      name: "es-transport"
+      # -- Transport service port
+      port: 9300
+    http:
+      # -- HTTP service name
+      name: "es-public"
+      # -- HTTP service port
+      port: 80
+  volume:
+    # -- Volume name and mountpoint for transport certificate
+    certificates:
+      name: elastic-transport-certificate
+      mount: /usr/share/elasticsearch/config/certs
+    # -- Data volume name and size
+    data:
+        name: data
+        size: 1Gi
+  env:
+    # -- JAVA_OPTS value to be passed as startup argument
+    javaOpts: "-Xms512m -Xmx512m"
+  xpack:
+    # -- If enabled, Elasticsearch will require user authentication
+    securityEnabled: false
+    # -- If enabled, internal cluster communication will be encrypted using the transport certificate
+    transportSSLEnabled: true
+    # -- Transport validation mode as defined by Elastic. In "certificate" mode, certificate is matched against CA, hostnames are not validates
+    transportSSLMode: certificate
+    # -- If enabled, internal monitoring collection is enabled
+    monitoringCollectionEnabled: true
+  resources:
+    # -- Resource requests
+    requests:
+      cpu: 250m
+      memory: 1024Mi
+    # -- Resource limits
+    limits:
+      cpu: 1000m
+      memory: 2048Mi
 
-statefulSetName: "es-node"
-replicaCount: 3
+ingress:
+  # -- If enabled, creates ingress for deployed resources
+  enabled: true
+  # -- Ingress name
+  name: elastic-ingress
+  # -- Path for Elasticsearch cluster
+  elasticPath: es
+  # -- Path for Kibana
+  kibanaPath: kibana
 
-certificatesVolumeName: elastic-transport-certificate
-certificatesVolumeMount: /usr/share/elasticsearch/config/certs
-dataVolumeName: data
-dataVolumeSize: "1Gi"
-
-image:
-  repository: docker.elastic.co/elasticsearch/elasticsearch
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
-
-env:
-  javaOpts: "-Xms512m -Xmx512m"
-
-elastitClusterName: es-k8s-cluster
-
-xpack:
-  securityEnabled: true
-  transportSSLEnabled: true
-  transportSSLMode: certificate
-  monitoringCollectionEnabled: true
+kibana:
+  # -- If enabled, Kibana will de deployed
+  enabled: true
+  # -- Kibana service name
+  serviceName: kibana-service
+  # -- Kibana service port
+  servicePort: 80
+  # -- Kibana deployment name
+  deploymentName: kibana
+  # -- Value for app label for Kibana resources
+  appLabel: kibana
+  # -- Kibana image
+  image: docker.elastic.co/kibana/kibana
+  # -- Username for Kibana to Elastic communication
+  elasticUsername: kibana_system

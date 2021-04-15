@@ -1,13 +1,13 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: {{ .Values.elasticTransportCertificate.name }}
+  name: {{ .Values.elastic.transportCertificate.name }}
 spec:
-  secretName: {{ .Values.elasticTransportCertificate.secret }}
+  secretName: {{ .Values.elastic.transportCertificate.secret }}
   dnsNames:
-    {{- $prefix := .Values.statefulSetName }}
-    {{- $sufix := printf "%s.%s.%s" .Values.elasticService.transport.name .Release.Namespace "svc.cluster.local" }}
-    {{- range until (.Values.replicaCount | int) }}
+    {{- $prefix := .Values.elastic.statefulSetName }}
+    {{- $sufix := printf "%s.%s.%s" .Values.elastic.service.transport.name .Release.Namespace "svc.cluster.local" }}
+    {{- range until (.Values.elastic.replicaCount | int) }}
     - {{ $prefix }}-{{ . }}.{{ $sufix }}
     {{- end }}
   issuerRef:
