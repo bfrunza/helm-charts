@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  elasticsearch-cluster:
+  - apiVersion: v2
+    appVersion: 7.12.0
+    created: "2021-04-15T21:00:37.4351788Z"
+    description: A Helm Chart for Elasticsearch cluster
+    digest: b121464b6917df4ad41f979c1d1a9be80c91044a9753d896b62fa7ad6df4e1fc
+    name: elasticsearch-cluster
+    type: application
+    urls:
+    - https://bfrunza.github.io/helm-charts/elasticsearch-cluster-7.12.0-1.tgz
+    version: 7.12.0-1
+generated: "2021-04-15T21:00:37.4345186Z"
