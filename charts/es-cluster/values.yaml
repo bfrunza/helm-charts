@@ -49,9 +49,10 @@ elastic:
       # -- HTTP service port
       port: 80
   volume:
-    # -- Volume name and mountpoint for transport certificate
     certificates:
+      # -- Volume name for transport certificate
       name: elastic-transport-certificate
+      # -- Volume mountpoint for transport certificate
       mount: /usr/share/elasticsearch/config/certs
     # -- Data volume name and size
     data:

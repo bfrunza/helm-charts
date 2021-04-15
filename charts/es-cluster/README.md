@@ -24,7 +24,8 @@ A Helm Chart for Elasticsearch cluster
 | elastic.transportCertificate.name | string | `"elastic-transport"` | Transport certificate object name |
 | elastic.transportCertificate.secret | string | `"elastic-transport-certificate"` | Secret name to store transport certificate |
 | elastic.usetAntiAffinity | bool | `true` | If enabled, will not allow two pods to run on the same node |
-| elastic.volume.certificates | object | `{"mount":"/usr/share/elasticsearch/config/certs","name":"elastic-transport-certificate"}` | Volume name and mountpoint for transport certificate |
+| elastic.volume.certificates.mount | string | `"/usr/share/elasticsearch/config/certs"` | Volume mountpoint for transport certificate |
+| elastic.volume.certificates.name | string | `"elastic-transport-certificate"` | Volume name for transport certificate |
 | elastic.volume.data | object | `{"name":"data","size":"1Gi"}` | Data volume name and size |
 | elastic.xpack.monitoringCollectionEnabled | bool | `true` | If enabled, internal monitoring collection is enabled |
 | elastic.xpack.securityEnabled | bool | `false` | If enabled, Elasticsearch will require user authentication |
