@@ -3,17 +3,17 @@ entries:
   elasticsearch-cluster:
   - apiVersion: v2
     appVersion: 7.12.0
-    created: "2021-04-16T10:19:42.7993373Z"
+    created: "2021-04-16T10:49:21.0742614Z"
     dependencies:
     - condition: ingress.deployController
       name: ingress-nginx
       repository: https://kubernetes.github.io/ingress-nginx
       version: 3.29.0
     description: A Helm Chart for Elasticsearch cluster
-    digest: ab41afff2b2bc5e06d5a2134ce5f52708fc06f426bdfa9489bfbb8ec2f85e17c
+    digest: c0dc12a0197e3305abccf38dae9fdc3feda5135ff34ee491facbe2bcd034d939
     name: elasticsearch-cluster
     type: application
     urls:
-    - https://bfrunza.github.io/helm-charts/elasticsearch-cluster-1.0.0.tgz
+    - bfrunza.github.io/helm-charts/elasticsearch-cluster-1.0.0.tgz
     version: 1.0.0
-generated: "2021-04-16T10:19:42.7967208Z"
+generated: "2021-04-16T10:49:21.071484Z"

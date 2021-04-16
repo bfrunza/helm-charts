@@ -63,7 +63,7 @@ elastic:
     # -- If enabled, Elasticsearch will require user authentication
     securityEnabled: false
     # -- If enabled, internal cluster communication will be encrypted using the transport certificate
-    transportSSLEnabled: true
+    transportSSLEnabled: false
     # -- Transport validation mode as defined by Elastic. In "certificate" mode, certificate is matched against CA, hostnames are not validates
     transportSSLMode: certificate
     # -- If enabled, internal monitoring collection is enabled

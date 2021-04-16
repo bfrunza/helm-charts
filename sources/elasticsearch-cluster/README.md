@@ -2,7 +2,7 @@
 
 A Helm Chart for Elasticsearch cluster
 
-![Version: 7.12.0-1](https://img.shields.io/badge/Version-7.12.0--1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.12.0](https://img.shields.io/badge/AppVersion-7.12.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.12.0](https://img.shields.io/badge/AppVersion-7.12.0-informational?style=flat-square)
 
 ## Additional Information
 
@@ -62,7 +62,7 @@ $ helm install my-release bfrunza/elasticsearch-cluster
 | elastic.volume.data | object | `{"name":"data","size":"1Gi"}` | Data volume name and size |
 | elastic.xpack.monitoringCollectionEnabled | bool | `true` | If enabled, internal monitoring collection is enabled |
 | elastic.xpack.securityEnabled | bool | `false` | If enabled, Elasticsearch will require user authentication |
-| elastic.xpack.transportSSLEnabled | bool | `true` | If enabled, internal cluster communication will be encrypted using the transport certificate |
+| elastic.xpack.transportSSLEnabled | bool | `false` | If enabled, internal cluster communication will be encrypted using the transport certificate |
 | elastic.xpack.transportSSLMode | string | `"certificate"` | Transport validation mode as defined by Elastic. In "certificate" mode, certificate is matched against CA, hostnames are not validates |
 | elasticCA.certificateCommonName | string | `"Internal Certificate CA"` | CA Common Name |
 | elasticCA.certificateName | string | `"elastic-ca"` | Resource name for internal CA signing certificate |
