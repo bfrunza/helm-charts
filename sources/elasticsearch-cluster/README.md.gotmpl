@@ -18,11 +18,11 @@ This chart will deploy a multinode elasticsearch cluster. The nodes have identic
 ## Installing the Chart
 
 ### TLS encryption
-In case you are deploying the chart with ```elastic.xpack.transportSSLEnabled = 'true'```, cert-manager with custom CRDs need to be deployed before deploying this chart. This can be done using the following commands:
+In case you are deploying the chart with ```elastic.xpack.transportSSLEnabled = 'true'```, cert-manager with custom CRDs need to be deployed before deploying this chart. This can be done using the following commands and it can be deployed in any namespace:
 
 ```console
 helm repo add jetstack https://charts.jetstack.io
-helm install cert-manager jetstack/cert-manager --set installCRDs=true --namespace=<namespace-name> --create-namespace 
+helm install cert-manager jetstack/cert-manager --set installCRDs=true --namespace=my-ns --create-namespace 
 ```
 To install the chart with the release name `my-release` in `my-ns` namespace:
 
@@ -32,11 +32,17 @@ helm install my-release bfrunza/{{ template "chart.name" . }} --namespace=my-ns 
 ```
 ### Sample deployments
 #### Elastcsearch cluster with TLS transport encryption. NOTE: requires cert-manager to be installed prior
-```helm install my-release bfrunza/{{ template "chart.name" . }} --namespace=my-ns --create-namespace --set elastic.xpack.transportSSLEnabled=true ```
+```console
+helm install my-release bfrunza/{{ template "chart.name" . }} --namespace=my-ns --create-namespace --set elastic.xpack.transportSSLEnabled=true
+```
 #### Elastcsearch cluster with Kibana and Ingress controller
-```helm install my-release bfrunza/{{ template "chart.name" . }} --namespace=my-ns --create-namespace --set elastic.xpack.transportSSLEnabled=true --set ingress.enabled=true --set ingress.deployController=true --set kibana.enabled =true ```
+```console
+helm install my-release bfrunza/{{ template "chart.name" . }} --namespace=my-ns --create-namespace --set elastic.xpack.transportSSLEnabled=true --set ingress.enabled=true --set ingress.deployController=true --set kibana.enabled=true
+```
 #### Deployment on single node Kubernetes cluster
-```helm install my-release bfrunza/{{ template "chart.name" . }} --namespace=my-ns --create-namespace --set elastic.useAntiAffinity=false ```
+```console
+helm install my-release bfrunza/{{ template "chart.name" . }} --namespace=my-ns --create-namespace --set elastic.useAntiAffinity=false
+```
 
 
 ## Future developments
