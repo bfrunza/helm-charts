@@ -18,7 +18,7 @@ spec:
         {{- include "es-cluster.selectorLabels" . | nindent 8 }}
     spec:
       affinity:
-        {{- if .Values.elastic.usetAntiAffinity }}
+        {{- if .Values.elastic.useAntiAffinity }}
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:

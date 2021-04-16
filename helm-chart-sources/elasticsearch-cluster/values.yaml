@@ -8,8 +8,6 @@ nameOverride: ""
 certManager:
   # -- Selfsigned certificate ClusterIssuer Name
   clusterIssuerName: selfsigned-issuer
-  # -- Namespace for selfsigned certificate ClusterIssuer
-  clusterIssuerNamespace: cert-manager
 
 elasticCA:
   # -- Resource name for internal CA signing certificate
@@ -31,7 +29,7 @@ elastic:
   # -- Image repository
   image: docker.elastic.co/elasticsearch/elasticsearch
   # -- If enabled, will not allow two pods to run on the same node
-  usetAntiAffinity: true
+  useAntiAffinity: true
   transportCertificate:
     # -- Transport certificate object name
     name: elastic-transport
@@ -81,8 +79,10 @@ elastic:
       memory: 2048Mi
 
 ingress:
-  # -- If enabled, creates ingress for deployed resources
-  enabled: true
+  # -- If enabled, creates ingress objects for deployed resources
+  enabled: false
+  # -- If enabled, nginx ingess controller will be deployed
+  deployController: false
   # -- Ingress name
   name: elastic-ingress
   # -- Path for Elasticsearch cluster
@@ -92,7 +92,7 @@ ingress:
 
 kibana:
   # -- If enabled, Kibana will de deployed
-  enabled: true
+  enabled: false
   # -- Kibana service name
   serviceName: kibana-service
   # -- Kibana service port
@@ -105,3 +105,7 @@ kibana:
   image: docker.elastic.co/kibana/kibana
   # -- Username for Kibana to Elastic communication
   elasticUsername: kibana_system
+
+ingress-nginx:
+  # -- Needed as a workaround for a bug in the nginx controller chart
+  fullnameOverride: nginx-ingress-ingress-nginx

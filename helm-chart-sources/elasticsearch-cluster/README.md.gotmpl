@@ -1,0 +1,38 @@
+{{ template "chart.header" . }}
+{{ template "chart.description" . }}
+
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+## Additional Information
+
+This chart will deploy a multinode elasticsearch cluster. The nodes have identical roles (master, data, ingest), so please have this in mind when deciding the number of replicas. By default, it will start with three nodes.
+
+## Besides the elastic nodes, this chart can deploy:
+
+| Component | Parameter |
+| --------- | --------- |
+| nginx ingress controller | ```ingress.deployController``` |
+| ingress objects for elasticsearch and kibana | ```ingress.enabled ``` |
+| kibana | ```kibana.enabled ``` |
+
+## Installing the Chart
+
+### TLS encryption
+In case you are deploying the chart with ```console elastic.xpack.securityEnabled = 'true' or elastic.xpack.transportSSLEnabled = 'true'```, cert-manager with custom CRDs need to be deployed before deploying this chart. This can be done using the following commands:
+
+```console
+helm repo add jetstack https://charts.jetstack.io
+helm install cert-manager jetstack/cert-manager --set installCRDs=true --namespace=<namespace-name> --create-namespace 
+```
+To install the chart with the release name `my-release`:
+
+```console
+$ helm repo add bfrunza https://bfrunza.github.io/helm-charts
+$ helm install my-release bfrunza/{{ template "chart.name" . }}
+```
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSection" . }}
+
+{{ template "helm-docs.versionFooter" . }}
