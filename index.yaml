@@ -3,7 +3,7 @@ entries:
   elasticsearch-cluster:
   - apiVersion: v2
     appVersion: 7.12.0
-    created: "2021-04-16T10:49:21.0742614Z"
+    created: "2021-04-16T10:55:53.5771339Z"
     dependencies:
     - condition: ingress.deployController
       name: ingress-nginx
@@ -14,6 +14,6 @@ entries:
     name: elasticsearch-cluster
     type: application
     urls:
-    - bfrunza.github.io/helm-charts/elasticsearch-cluster-1.0.0.tgz
+    - elasticsearch-cluster-1.0.0.tgz
     version: 1.0.0
-generated: "2021-04-16T10:49:21.071484Z"
+generated: "2021-04-16T10:55:53.5739037Z"
