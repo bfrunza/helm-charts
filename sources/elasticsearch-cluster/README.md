@@ -19,18 +19,30 @@ This chart will deploy a multinode elasticsearch cluster. The nodes have identic
 ## Installing the Chart
 
 ### TLS encryption
-In case you are deploying the chart with ```console elastic.xpack.securityEnabled = 'true' or elastic.xpack.transportSSLEnabled = 'true'```, cert-manager with custom CRDs need to be deployed before deploying this chart. This can be done using the following commands:
+In case you are deploying the chart with ```elastic.xpack.transportSSLEnabled = 'true'```, cert-manager with custom CRDs need to be deployed before deploying this chart. This can be done using the following commands:
 
 ```console
 helm repo add jetstack https://charts.jetstack.io
 helm install cert-manager jetstack/cert-manager --set installCRDs=true --namespace=<namespace-name> --create-namespace
 ```
-To install the chart with the release name `my-release`:
+To install the chart with the release name `my-release` in `my-ns` namespace:
 
 ```console
-$ helm repo add bfrunza https://bfrunza.github.io/helm-charts
-$ helm install my-release bfrunza/elasticsearch-cluster
+helm repo add bfrunza https://bfrunza.github.io/helm-charts
+helm install my-release bfrunza/elasticsearch-cluster --namespace=my-ns --create-namespace
 ```
+### Sample deployments
+#### Elastcsearch cluster with TLS transport encryption. NOTE: requires cert-manager to be installed prior
+```helm install my-release bfrunza/elasticsearch-cluster --namespace=my-ns --create-namespace --set elastic.xpack.transportSSLEnabled=true ```
+#### Elastcsearch cluster with Kibana and Ingress controller
+```helm install my-release bfrunza/elasticsearch-cluster --namespace=my-ns --create-namespace --set elastic.xpack.transportSSLEnabled=true --set ingress.enabled=true --set ingress.deployController=true --set kibana.enabled =true ```
+#### Deployment on single node Kubernetes cluster
+```helm install my-release bfrunza/elasticsearch-cluster --namespace=my-ns --create-namespace --set elastic.useAntiAffinity=false ```
+
+## Future developments
+- add support for xpack.security.enabled
+- add support for multiple different node roles
+- allow single node deployment
 
 ## Requirements
 
@@ -61,7 +73,6 @@ $ helm install my-release bfrunza/elasticsearch-cluster
 | elastic.volume.certificates.name | string | `"elastic-transport-certificate"` | Volume name for transport certificate |
 | elastic.volume.data | object | `{"name":"data","size":"1Gi"}` | Data volume name and size |
 | elastic.xpack.monitoringCollectionEnabled | bool | `true` | If enabled, internal monitoring collection is enabled |
-| elastic.xpack.securityEnabled | bool | `false` | If enabled, Elasticsearch will require user authentication |
 | elastic.xpack.transportSSLEnabled | bool | `false` | If enabled, internal cluster communication will be encrypted using the transport certificate |
 | elastic.xpack.transportSSLMode | string | `"certificate"` | Transport validation mode as defined by Elastic. In "certificate" mode, certificate is matched against CA, hostnames are not validates |
 | elasticCA.certificateCommonName | string | `"Internal Certificate CA"` | CA Common Name |

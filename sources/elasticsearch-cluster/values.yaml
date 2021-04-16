@@ -60,8 +60,6 @@ elastic:
     # -- JAVA_OPTS value to be passed as startup argument
     javaOpts: "-Xms512m -Xmx512m"
   xpack:
-    # -- If enabled, Elasticsearch will require user authentication
-    securityEnabled: false
     # -- If enabled, internal cluster communication will be encrypted using the transport certificate
     transportSSLEnabled: false
     # -- Transport validation mode as defined by Elastic. In "certificate" mode, certificate is matched against CA, hostnames are not validates

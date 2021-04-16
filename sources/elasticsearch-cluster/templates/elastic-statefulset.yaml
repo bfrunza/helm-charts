@@ -58,8 +58,6 @@ spec:
         - name: xpack.security.transport.ssl.enabled
           value: "{{ .Values.elastic.xpack.transportSSLEnabled }}"
         {{- if .Values.elastic.xpack.transportSSLEnabled }}
-        - name: xpack.security.enabled
-          value: {{ quote .Values.elastic.xpack.securityEnabled }}
         - name: xpack.monitoring.collection.enabled
           value: "{{ .Values.elastic.xpack.monitoringCollectionEnabled }}"
         - name: xpack.security.transport.ssl.verification_mode
