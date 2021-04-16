@@ -74,8 +74,10 @@ spec:
         volumeMounts:
         - name: {{ .Values.elastic.volume.data.name }}
           mountPath: /usr/share/elasticsearch/data
+        {{- if .Values.elastic.xpack.transportSSLEnabled }}
         - name: {{ .Values.elastic.volume.certificates.name }}
           mountPath: {{ .Values.elastic.volume.certificates.mount }}
+        {{- end}}
         ports:
         - name: http
           containerPort: 9200
@@ -88,9 +90,11 @@ spec:
           initialDelaySeconds: 50
           periodSeconds: 10
       volumes:
+      {{- if .Values.elastic.xpack.transportSSLEnabled }}
       - name: {{ .Values.elastic.volume.certificates.name}}
         secret:
           secretName: {{ .Values.elastic.transportCertificate.secret }}
+      {{- end }}
   volumeClaimTemplates:
   - metadata:
       name: {{ .Values.elastic.volume.data.name }}
